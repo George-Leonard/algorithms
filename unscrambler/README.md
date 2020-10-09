@@ -5,3 +5,4 @@ and instantly post it to our clipboard to paste within seconds.
 It turned out to be extremely successful. 
 I did attempt to contact Arkham Network once we found this little 'cheat', and they have since removed the chat game.
 
+By George Leonard
