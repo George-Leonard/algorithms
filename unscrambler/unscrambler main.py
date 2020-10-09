@@ -1,3 +1,7 @@
+#------------------------------------------------------------------------------
+#-----------------------Made by George Leonard 15/09/2019----------------------
+#------------------------------------------------------------------------------
+
 def addword(word, array):
     array.append(list(word))
 
@@ -44,3 +48,5 @@ addword("oldschool-prison", test)
 addword("thor", test)
 test = unscramble("tohr", test)
 print(test)
+
+#https://github.com/George-Leonard/
