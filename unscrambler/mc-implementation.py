@@ -1,3 +1,7 @@
+#------------------------------------------------------------------------------
+#-----------------------Made by George Leonard 15/09/2019----------------------
+#------------------------------------------------------------------------------
+
 import os, time, pyperclip, unscrambler as u
 log = open(os.getenv("APPDATA") +"/.minecraft/logs/latest.log", "r")
 
@@ -102,5 +106,5 @@ while True:
         time.sleep(0.1)
         continue
 
-                            
+#https://github.com/George-Leonard/                      
 
