@@ -36,33 +36,63 @@ class Ui_MainWindow(object):
         #Now a database from the provided database should be created
         #This database should only include the rows for the NULL values in the diabetes column,
         #and factors required by the calculator
-        
-        
-        
+
+        try:
+            calculator.calculate(df)
+        except Exception as e:
+            print(e)
+            
+
+        try:
+            data = pd.DataFrame(data = df)
+
+        except Exception as e:
+            print(e)
+            error_dialog = QtWidgets.QErrorMessage()
+            error_dialog.showMessage('Database not yet inputted')
+            error_dialog.exec_()
 
 
     def loadData(self):
+
+        global df
+
         path = str(self.lineEdit_2.text())
         table = str(self.lineEdit.text())
         print(path,"+",table)
+
+
+        try:
+            conn = sqlite3.connect(path)
+            query = "SELECT * FROM %s" %(table)
+            result = conn.execute(query)
+
+            
+            df = pd.read_sql_query(query,conn)
+            count = 0
+            for i in df:
+                count = count+1
+            self.tableWidget.setColumnCount(count)
+
+            for row_number, row_data in enumerate(result):
+                self.tableWidget.insertRow(row_number)
+                for column_number, data in enumerate(row_data):
+                    self.tableWidget.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+
+            columns = []
+            
+            for column in df.columns:
+                print(column)
+                columns.append(column)
                 
-        conn = sqlite3.connect(path)
-        query = "SELECT * FROM %s" %(table)
-        result = conn.execute(query)
+            self.tableWidget.setHorizontalHeaderLabels(columns)
 
-        
-        df = pd.read_sql_query(query,conn)
-        count = 0
-        for i in df:
-            count = count+1
-        self.tableWidget.setColumnCount(count)
-
-        for row_number, row_data in enumerate(result):
-            self.tableWidget.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tableWidget.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
-        
-        conn.close()
+            conn.close()
+        except Exception as e:
+            print(e)
+            error_dialog = QtWidgets.QErrorMessage()
+            error_dialog.showMessage('Cannot load database')
+            error_dialog.exec_()
         
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -87,7 +117,12 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(380, 40, 121, 21))
         self.pushButton.setObjectName("pushButton")
-        self.pushButton.clicked.connect(lambda: self.loadData())
+        try:
+            self.pushButton.clicked.connect(lambda: self.loadData())
+        except:
+            error_dialog = QtWidgets.QErrorMessage()
+            error_dialog.showMessage('Cannot load database')
+            error_dialog.exec_()
         
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(20, 10, 61, 21))
