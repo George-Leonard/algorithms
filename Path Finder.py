@@ -5,13 +5,13 @@ import time
 
 #user friendly
 
-#size = input('Dimensions(x, y): ')
-#start = input('Start point(x,y): ')
-#end = input('End point(x,y): ')
+size = input('Dimensions(x, y): ')
+start = input('Start point(x,y): ')
+end = input('End point(x,y): ')
 
-size = '10,10'
-start = '9,0'
-end = '0,9'
+#size = '10,10'
+#start = '9,0'
+#end = '0,9'
 
 
 
@@ -39,12 +39,12 @@ obstacleslist = []
 
 #user friendly
 
-#while x_==1:
-   #obstacles = input('Obstacles(x,y): ')
-    #if obstacles == '-':
-        #x_=2
-    #else:
-        #obstacleslist.append(obstacles)
+while x_==1:
+    obstacles = input('Obstacles(x,y): ')
+    if obstacles == '-':
+        x_=2
+    else:
+        obstacleslist.append(obstacles)
 
 
         
@@ -96,6 +96,14 @@ while finished == False:
             break
     except:
         break
+print(maze)
+        
+        
+        
+                
+    
+
+
 print(maze)
         
         
