@@ -40,6 +40,7 @@ class Ui_MainWindow(object):
 
         columns = []
         for column in df.columns:
+            column = str(column)
             print(column)
             columns.append(column)
                 
@@ -104,20 +105,48 @@ class Ui_MainWindow(object):
         except Exception as e:
             print(e)
             error_dialog = QtWidgets.QErrorMessage()
-            error_dialog.showMessage('No database inputted')
+            error_dialog.showMessage('No database inputted', e)
             error_dialog.exec_()
 
+    def loadDataCSV(self):
+        print('ImportCSV PushButton Clicked')
+        global df
+        attributes = []
+        path = str(self.lineEdit_3.text())
 
-    def loadData(self):
+        try:
+            with open(path) as df:
+                lines = df.readlines()
+                alllines = []
+                for i in lines:
+                    alllines.append(i)
+                attribscount = len(alllines[0].split(','))
 
-        print('Import PushButton Clicked')
+                for i in range(0, attribscount):
+                    attributes.append(str(i))
+
+                add = []
+                for i in range(0, len(alllines)):
+                    add.append(alllines[i].split(','))
+     
+            pddf = pd.DataFrame(add)
+
+            pddf.columns = alllines[0].split(',')
+
+            pddf = pddf.drop([0])
+            self.updateTable(pddf)
+        except Exception as e:
+            error_dialog = QtWidgets.QErrorMessage()
+            error_dialog.showMessage('Cannot load database', e)
+            error_dialog.exec_()
+
+    def loadDataDB(self):
+        print('ImportDB PushButton Clicked')
         global df
 
         path = str(self.lineEdit_2.text())
         table = str(self.lineEdit.text())
-        print(path,"+",table)
-
-
+        
         try:
             conn = sqlite3.connect(path)
             query = "SELECT * FROM %s" %(table)
@@ -146,7 +175,7 @@ class Ui_MainWindow(object):
             conn.close()
         except Exception as e:
             error_dialog = QtWidgets.QErrorMessage()
-            error_dialog.showMessage('Cannot load database')
+            error_dialog.showMessage('Cannot load database', e)
             error_dialog.exec_()
         
     def setupUi(self, MainWindow):
@@ -164,22 +193,38 @@ class Ui_MainWindow(object):
         
 
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(92, 10, 151, 21))
+        self.lineEdit.setGeometry(QtCore.QRect(90, 10, 151, 21))
         self.lineEdit.setObjectName("lineEdit")
+
         self.lineEdit_2 = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_2.setGeometry(QtCore.QRect(90, 40, 281, 21))
         self.lineEdit_2.setObjectName("lineEdit_2")
+
+        self.lineEdit_3 = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEdit_3.setGeometry(QtCore.QRect(500, 10, 150, 21))
+        self.lineEdit_3.setObjectName("lineEdit_2")
         
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(380, 40, 121, 21))
         self.pushButton.setObjectName("pushButton")
+
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setGeometry(QtCore.QRect(655, 10, 121, 21))
+        self.pushButton_2.setObjectName("pushButton_2")
         try:
-            self.pushButton.clicked.connect(lambda: self.loadData())
-        except:
+            self.pushButton.clicked.connect(lambda: self.loadDataDB())
+        except Exception as e:
             error_dialog = QtWidgets.QErrorMessage()
-            error_dialog.showMessage('Cannot load database')
+            error_dialog.showMessage('Cannot load database', e)
             error_dialog.exec_()
         
+        try:
+            self.pushButton_2.clicked.connect(lambda: self.loadDataCSV())
+        except Exception as e:
+            error_dialog = QtWidgets.QErrorMessage()
+            error_dialog.showMessage('Cannot load database', e)
+            error_dialog.exec_()
+
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(20, 10, 61, 21))
         self.label.setObjectName("label")
@@ -187,7 +232,7 @@ class Ui_MainWindow(object):
         self.label_2.setGeometry(QtCore.QRect(20, 40, 51, 16))
         self.label_2.setObjectName("label_2")
         self.labelCalcLoaded = QtWidgets.QLabel(self.centralwidget)
-        self.labelCalcLoaded.setGeometry(QtCore.QRect(601,10,150,50))
+        self.labelCalcLoaded.setGeometry(QtCore.QRect(601,40,150,50))
         
         MainWindow.setCentralWidget(self.centralwidget)
         
@@ -243,7 +288,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Import"))
+        self.pushButton.setText(_translate("MainWindow", "Import .db"))
+        self.pushButton_2.setText(_translate("MainWindow", "Import .csv/.txt"))
         self.label.setText(_translate("MainWindow", "SQL Table"))
         self.label_2.setText(_translate("MainWindow", "File Path"))
         self.labelCalcLoaded.setText(_translate('MainWindow', 'loaded: '+str(calculatorsLoaded)))
