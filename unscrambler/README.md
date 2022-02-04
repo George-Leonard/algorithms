@@ -1,8 +1,6 @@
-This is a small idea me and my friend had while revisiting the popular minecraft server, Arkham Network in 2019.
-Arkham Network had an unscrambling challenge in the chat, and whoever solved this challenge first would be rewarded. Putting my coding skills to the test at the time, I decided
-to see if I could make a python program, which (while running in the background of gameplay), could take the scrambled word from the minecraft chat, unscramble it, 
-and instantly post it to our clipboard to paste within seconds. 
-It turned out to be extremely successful. 
-I did attempt to contact Arkham Network once we found this little 'cheat', and they have yet to respond.
+This code stemmed from an idea me and my friend had whilst revisiting the popular minecraft server 'Arkham Network' back in 2019.
+Players on the 'Arkham Network' could earn rewards every so often, by unscrambling a randomly announced array of letters.
+This program could take the scrambled word from the minecraft chat, unscramble it, and instantly post it to our clipboard to paste to chat within seconds, earning us the rewards at an inhuman rate.
+It turned out to be extremely successful. I did attempt to contact Arkham Network once we found this little 'cheat', to prevent a disrupt in their economy, but they never got back to me.
 
 By George Leonard
